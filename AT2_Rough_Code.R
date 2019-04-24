@@ -9,7 +9,7 @@ library(Amelia)
 ################################
 
 postcode_data <- read_csv("7_PostcodeData2018.csv")
-## suburbdata <- read_csv("9_SuburbData2018.csv")
+suburbdata <- read_csv("9_SuburbData2018.csv")
 alcohol_consumption <- read_csv("beh_alc_lhn_trend.csv")
 alcohol_hospitalisations <- read_csv("beh_alcafhos_lhn_trend.csv")
 alcohol_frequency <- read_csv("beh_alcfreq_lhn_trend.csv")
@@ -18,16 +18,16 @@ alcohol_frequency <- read_csv("beh_alcfreq_lhn_trend.csv")
 ## Basic Data Read
 ################################
 
-## names(suburbdata)
+names(suburbdata)
 
 summary(postcode_data)
-## summary(suburbdata)
+summary(suburbdata)
 summary(alcohol_consumption)
 summary(alcohol_hospitalisations)
 summary(alcohol_frequency)
 
 str(postcode_data)
-## str(suburbdata)
+str(suburbdata)
 str(alcohol_consumption)
 str(alcohol_hospitalisations)
 str(alcohol_frequency)
@@ -37,7 +37,7 @@ str(alcohol_frequency)
 ##################################################
 
 missmap(postcode_data, main = "Missing values vs observed")
-## missmap(suburbdata, main = "Missing values vs observed")
+missmap(suburbdata, main = "Missing values vs observed")
 missmap(alcohol_consumption, main = "Missing values vs observed")
 missmap(alcohol_hospitalisations, main = "Missing values vs observed")
 missmap(alcohol_frequency, main = "Missing values vs observed")
@@ -45,6 +45,11 @@ missmap(alcohol_frequency, main = "Missing values vs observed")
 ########################################
 ##Data Cleaning and Prep
 ########################################
+
+names(postcode_data)
+# Filter the "postcode_data" and rename the dates
+postcode_data <- rename (postcode_data, March 2014 = "March_2014")
+
 
 # Clean the "alcohol hospitalisations" data
 # Remove the NA's /blank data (from all the comments at the end of the csv file)
@@ -69,7 +74,6 @@ alcohol_consumption <- alcohol_consumption %>%
 #Consumption data is by year... the other two are by financial year... let's forget using consumption for now and use the freq instead
 #####################################################################
 
-names(alcohol_frequency)
 # Clean the alcohol frequency data
 # Remove the NA's /blank data (from all the comments at the end of the csv file)
 alcohol_frequency <- alcohol_frequency %>%
@@ -79,6 +83,7 @@ alcohol_frequency <- rename (alcohol_frequency, freq = "Drinking frequency")
 alcohol_frequency <- rename (alcohol_frequency, estimate = "Actual estimate (Per cent)")
 
 # remove the "All LHDs" aggregate data from local health districts - we have them all can sum them up if we need an all!
+names(alcohol_frequency)
 alcohol_frequency <- alcohol_frequency %>%
   filter (LHD !="All LHDs")
   
@@ -123,10 +128,3 @@ str(alcohol_freq_hosp)
 str(alcohol_hospitalisations)
 
 
-names(postcode_data)
-# RENAME offence category in "postcode_data"
-
-postcode_data <- rename(postcode_data, `Offence category` = "Offence_category")
-select(postcode_data, Postcode, "May-14")
-sub = subset(postcode_data, Offence = "Liquor", select="Dec-18")
-sub
